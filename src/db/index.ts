@@ -39,7 +39,7 @@ export const initDB = async () => {
     CHECK (status IN ('open', 'in_progress', 'resolved')),
 
     reporter_id INTEGER NOT NULL,
-    customarId INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    customar_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
 
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 
