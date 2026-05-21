@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import {
   createIssueIntoDB,
   getAllIssuesFromDB,
+  getSingleIssueFromDB,
 } from "../services/issues.service";
 import { sendResponse } from "../../utility/sendResponse";
 
@@ -33,9 +34,22 @@ export const getAllIssues = async (req: Request, res: Response) => {
 };
 
 export const getSingleIssue = async (req: Request, res: Response) => {
-  res.send({
-    success: true,
-    message: "Get single issue only loged in user.",
+  const id = Number(req.params.id);
+
+  const issue = await getSingleIssueFromDB(id);
+  if (!issue) {
+    sendResponse(
+      res,
+      {
+        message: "Issue not found!",
+      },
+      404
+    );
+    return;
+  }
+  sendResponse(res, {
+    message: "Issue fetched successfully",
+    data: issue,
   });
 };
 

@@ -82,3 +82,26 @@ export const getAllIssuesFromDB = async (query: IssueQuery) => {
 
   return formattedIssues;
 };
+
+export const getSingleIssueFromDB = async (id: number) => {
+  const issues = (await sql`
+        SELECT * FROM issues WHERE id = ${id}
+        `) as Issue[];
+
+  const issue = issues[0];
+  if (!issues[0]) {
+    return null;
+  }
+
+  const users = await sql`
+  SELECT id, name, role
+  FROM users
+  WHERE id = ${issue?.reporter_id}
+  `;
+  const reporter = users[0];
+
+  return {
+    ...issue,
+    reporter,
+  };
+};

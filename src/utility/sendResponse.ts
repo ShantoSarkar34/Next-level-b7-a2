@@ -1,13 +1,19 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 
 export function sendResponse<T>(
   res: Response,
-  { message, data, error }: { message: unknown; data?: T; error?: boolean },
+  {
+    message,
+    data,
+  }: {
+    message: unknown;
+    data?: T;
+  },
   status = 200
 ): void {
   res.status(status).json({
-    success: error ? false : true,
-    message: message,
-    data: error ? undefined : data,
+    success: status < 400,
+    message,
+    data,
   });
 }

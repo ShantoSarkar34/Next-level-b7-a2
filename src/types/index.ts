@@ -41,3 +41,10 @@ export type IssueQuery = {
   type?: IssueType;
   status?: Status;
 };
+
+export type UpdateIssuePayload ={
+  title?: string;
+  description?:string;
+  type?:IssueType;
+  status?: "open" | "in_progress" | "resolved";
+}
