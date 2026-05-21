@@ -159,3 +159,13 @@ export const updateIssueIntoDB = async (
 
   return result[0];
 };
+
+export const deleteIssueFromDB = async (id: number) => {
+  const result = (await sql`
+    DELETE FROM issues
+    WHERE id = ${id}
+    RETURNING *
+  `) as Issue[];
+
+  return result[0];
+};

@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import {
   createIssueIntoDB,
+  deleteIssueFromDB,
   getAllIssuesFromDB,
   getSingleIssueFromDB,
   updateIssueIntoDB,
@@ -78,8 +79,21 @@ export const updateIssue = async (req: Request, res: Response) => {
 };
 
 export const deleteIssue = async (req: Request, res: Response) => {
-  res.send({
-    success: true,
-    message: "This is Issues delete route only for maintainor!",
+  const id = Number(req.params.id);
+  const deleteIssue = await deleteIssueFromDB(id);
+
+  if (!deleteIssue) {
+    sendResponse(
+      res,
+      {
+        message: "Issue not found!",
+      },
+      404
+    );
+    return;
+  }
+  sendResponse(res, {
+    message: "Issue deleted successfully",
+    data: deleteIssue,
   });
 };
