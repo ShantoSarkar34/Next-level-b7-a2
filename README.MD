@@ -190,7 +190,6 @@ Authorization: YOUR_JWT_TOKEN
 
 ---
 
----
 
 # 🗄️ DATABASE SCHEMA
 
