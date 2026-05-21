@@ -1,24 +1,29 @@
 import { Router } from "express";
 import {
-//   createIssue,
+  createIssue,
   getAllIssues,
-//   getSingleIssue,
-//   updateIssue,
-//   deleteIssue
+  getSingleIssue,
+  updateIssue,
+  deleteIssue,
 } from "../controllers/issues.controller";
 
-import { auth } from "../../utility/auth";
+import { auth, authorizedRole } from "../../utility/auth";
 
 const router = Router();
 
-// router.post("/", auth, createIssue);
+router.post(
+  "/",
+  auth,
+  authorizedRole("contributor", "maintainer"),
+  createIssue
+);
 
-router.get("/", getAllIssues);
+router.get("/", auth, getAllIssues);
 
-// router.get("/:id", getSingleIssue);
+router.get("/:id", auth, getSingleIssue);
 
-// router.patch("/:id", auth, updateIssue);
+router.patch("/:id", auth, updateIssue);
 
-// router.delete("/:id", auth, deleteIssue);
+router.delete("/:id", auth, authorizedRole("maintainer"), deleteIssue);
 
 export default router;

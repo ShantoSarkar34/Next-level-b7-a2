@@ -19,7 +19,7 @@ export type User = {
 
 export type RUser = Omit<User, "id" | "created_at" | "updated_at" | "password_hash">;
 
-export type Issues = {
+export type Issue = {
   id: number;
   title: string;
   description: string;
@@ -28,4 +28,16 @@ export type Issues = {
   reporter_id: number;
   created_at: Date;
   updated_at: Date;
+};
+
+export type CreateIssuePayload = {
+  title: string;
+  description: string;
+  type: IssueType;
+};
+
+export type IssueQuery = {
+  sort?: string;
+  type?: IssueType;
+  status?: Status;
 };

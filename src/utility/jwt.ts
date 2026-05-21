@@ -2,8 +2,8 @@ import config from "../config";
 import type { RUser } from "../types";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 
-export const veryfiToken = (token: string, type: "access") => {
-  const secret = type ="access"
+export const veryfiToken = (token: string) => {
+  const secret = config.jwt_secret;
   const decod = jwt.verify(token, secret);
   return decod as JwtPayload;
 };
@@ -14,5 +14,4 @@ export const signToken = (payload: RUser ) => {
   });
   return accessToken;
 };
-// console.log(signToken({ id: 565, name: "shanto", email:"shanto@gmail.com", role:"contributor",password_hash:"shanto"}))
 

@@ -7,7 +7,6 @@ const config={
     database_url: env.DATABASE_URL as string,
     role_env: env.NODE_ENV as string,
     jwt_secret: env.JWT_SECRET as string,
-    refresh_secret: env.REFRESH_SECRET as string,
 }
 
 export default config;
