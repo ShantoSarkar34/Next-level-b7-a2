@@ -17,7 +17,10 @@ export type User = {
   updated_at: Date;
 };
 
-export type RUser = Omit<User, "id" | "created_at" | "updated_at" | "password_hash">;
+export type RUser = Omit<
+  User,
+  "id" | "created_at" | "updated_at" | "password_hash"
+>;
 
 export type Issue = {
   id: number;
@@ -42,9 +45,16 @@ export type IssueQuery = {
   status?: Status;
 };
 
-export type UpdateIssuePayload ={
+export type SafeUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: Role;
+};
+
+export type UpdateIssuePayload = {
   title?: string;
-  description?:string;
-  type?:IssueType;
+  description?: string;
+  type?: IssueType;
   status?: "open" | "in_progress" | "resolved";
-}
+};

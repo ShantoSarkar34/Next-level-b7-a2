@@ -4,11 +4,7 @@ import { veryfiToken } from "./jwt";
 import authService from "../api/services/auth.service";
 import type { Role } from "../types";
 
-export const auth = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -27,7 +23,12 @@ export const auth = async (
     return sendResponse(res, { message: "User not found!" }, 401);
   }
 
-  req.user = user;
+  req.user = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  };
 
   next();
 };
@@ -38,11 +39,7 @@ export const authorizedRole = (...roles: Role[]) => {
       return sendResponse(res, { message: "Unauthorized!" }, 401);
     }
     if (!roles.includes(req.user.role)) {
-      return sendResponse(
-        res,
-        { message: "You don't have permission!" },
-        403
-      );
+      return sendResponse(res, { message: "You don't have permission!" }, 403);
     }
     next();
   };

@@ -3,6 +3,7 @@ import {
   createIssueIntoDB,
   getAllIssuesFromDB,
   getSingleIssueFromDB,
+  updateIssueIntoDB,
 } from "../services/issues.service";
 import { sendResponse } from "../../utility/sendResponse";
 
@@ -54,9 +55,25 @@ export const getSingleIssue = async (req: Request, res: Response) => {
 };
 
 export const updateIssue = async (req: Request, res: Response) => {
-  res.send({
-    success: true,
-    message: "Update issues only loged in user.",
+  const id = Number(req.params.id);
+
+  const updatedIssue = await updateIssueIntoDB(id, req.body, req.user!);
+
+  if (!updatedIssue) {
+    sendResponse(
+      res,
+      {
+        message: "Issue not found!",
+      },
+      404
+    );
+
+    return;
+  }
+
+  sendResponse(res, {
+    message: "Issue updated successfully",
+    data: updatedIssue,
   });
 };
 

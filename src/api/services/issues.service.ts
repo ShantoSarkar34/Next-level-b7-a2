@@ -1,5 +1,12 @@
 import { sql } from "../../db";
-import type { CreateIssuePayload, Issue, IssueQuery } from "../../types";
+import type {
+  CreateIssuePayload,
+  Issue,
+  IssueQuery,
+  SafeUser,
+  UpdateIssuePayload,
+  User,
+} from "../../types";
 
 export const createIssueIntoDB = async (
   payload: CreateIssuePayload,
@@ -104,4 +111,51 @@ export const getSingleIssueFromDB = async (id: number) => {
     ...issue,
     reporter,
   };
+};
+
+export const updateIssueIntoDB = async (
+  id: number,
+  payload: UpdateIssuePayload,
+  currentUser: SafeUser
+) => {
+  const issues = (await sql`
+    SELECT *
+    FROM issues
+    WHERE id = ${id}
+  `) as Issue[];
+
+  const issue = issues[0];
+
+  if (!issue) {
+    return null;
+  }
+
+  if (currentUser.role === "contributor") {
+    if (issue.reporter_id !== currentUser.id) {
+      throw new Error("You can update only your own issues!");
+    }
+
+    if (issue.status !== "open") {
+      throw new Error("You can only update open issues!");
+    }
+  }
+
+  const title = payload.title ?? issue.title;
+  const description = payload.description ?? issue.description;
+  const type = payload.type ?? issue.type;
+  const status = payload.status ?? issue.status;
+
+  const result = (await sql`
+    UPDATE issues
+    SET
+      title = ${title},
+      description = ${description},
+      type = ${type},
+      status = ${status},
+      updated_at = NOW()
+    WHERE id = ${id}
+    RETURNING *
+  `) as Issue[];
+
+  return result[0];
 };
