@@ -18,9 +18,9 @@ router.post(
   createIssue
 );
 
-router.get("/", auth, getAllIssues);
+router.get("/", getAllIssues);
 
-router.get("/:id", auth, getSingleIssue);
+router.get("/:id", getSingleIssue);
 
 router.patch("/:id", auth, updateIssue);
 

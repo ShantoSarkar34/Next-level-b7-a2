@@ -26,6 +26,9 @@ Built with **TypeScript, Express, PostgreSQL (NeonDB), and raw SQL queries**.
 
 👉 Base URL: `https://devpulse-backend-server.onrender.com/`
 
+## API Base Route
+/api
+
 ---
 
 ## ⚙️ Tech Stack
