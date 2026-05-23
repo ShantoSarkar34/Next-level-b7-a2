@@ -7,10 +7,16 @@ class AuthService {
     const { name, email, role, password } = user;
     const hash = await bcrypt.hash(password, 10);
     const res = await sql`
-      INSERT INTO users (name, email, password_hash,role)
-      VALUES (${name}, ${email}, ${hash}, COALESCE(${role}, 'user'))
-      RETURNING id, name, email, role, created_at, updated_at
-      `;
+    INSERT INTO users (name, email, password_hash, role)
+    VALUES (
+      ${name},
+      ${email},
+      ${hash},
+      COALESCE(${role}, 'contributor')
+    )
+    RETURNING id, name, email, role, created_at, updated_at
+  `;
+
     return res[0];
   }
 
@@ -26,11 +32,11 @@ class AuthService {
     return isvalid ? user : null;
   }
 
-  async getUserById(id:string){
-    const res= await sql`
+  async getUserById(id: string) {
+    const res = await sql`
     SELECT id, name, email, role FROM users WHERE id = ${id}
-    `
-    return res[0] as RUser & {id: number} 
+    `;
+    return res[0] as RUser & { id: number };
   }
 }
 

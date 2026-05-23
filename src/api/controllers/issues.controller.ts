@@ -30,7 +30,7 @@ export const getAllIssues = async (req: Request, res: Response) => {
   const issues = await getAllIssuesFromDB(req.query);
 
   sendResponse(res, {
-    message: "Issues fetched successfully",
+    message: "Issues retrived successfully",
     data: issues,
   });
 };

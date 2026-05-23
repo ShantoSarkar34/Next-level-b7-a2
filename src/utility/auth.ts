@@ -27,7 +27,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    role: user.role,
+    role: user.role ?? "contributor",
   };
 
   next();

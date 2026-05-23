@@ -17,10 +17,16 @@ export type User = {
   updated_at: Date;
 };
 
-export type RUser = Omit<
-  User,
-  "id" | "created_at" | "updated_at" | "password_hash"
->;
+// export type RUser = Omit<
+//   User,
+//   "id" | "created_at" | "updated_at" | "password_hash"
+// >;
+export type RUser = {
+  name: string;
+  email: string;
+  password?: string;
+  role?: Role;
+};
 
 export type Issue = {
   id: number;
